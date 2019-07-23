@@ -22,6 +22,20 @@ class Equasion {
     public function __toString() {
        return $this->_op1 . $this->_op . $this->_op2;
     }
+
+    public function exec(VariableStorage $store) {
+        $arg1 = $store->all()[$this->_op1] ?? $this->_op1;
+        $arg2 = $store->all()[$this->_op2] ?? $this->_op2;
+        $st = (
+            ($arg1 instanceof Equasion ? $arg1->exec($store) : $this->_op1)
+            . $this->_op
+            . ($arg2 instanceof Equasion ? $arg2->exec($store) : $this->_op2)
+        );
+        $st = str_replace('++', '+ +', $st);
+        $st = str_replace('--', '- -', $st);
+        eval('$st = ' . $st . ';');
+        return ($st);
+    }
 }
 class Calc {
   protected $_store = null;
@@ -60,6 +74,10 @@ class Calc {
 echo "finaly: $str\n";
       var_dump($this->_store->all());
       if ((strpos($str, '(') !== false) || strpos($str, ')') !== false) throw new Exception('Wrong parenthesis');
+
+      foreach($this->_store->all() as $eq) {
+        echo "$eq = " . (is_string($eq) ? $eq : $eq->exec($this->_store)) . "\n";
+      };
   }
 }
 new Calc('((33--4+5)/34 + -49)-(6)');
