@@ -1,0 +1,13 @@
+nginx:
+  image: nginx
+  volumes:
+  - ./etc/calc.conf:/etc/nginx/conf.d/calc.conf
+  - ./app:/app
+  links:
+  - "php"
+  ports:
+  - "8095:80"
+php:
+  image: php:7-fpm
+  volumes:
+  - ./app:/app
