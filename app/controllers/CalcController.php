@@ -10,12 +10,12 @@ class CalcController extends Controller
     public function actionIndex()
     {
         try {
-            // '((33--4+5)/34 + -49)-(6)'
-            // (34-44)*19 - 6
-            // 34-44*19 - 6
-            $this->_renderJson(
-                (new Calc($this->_request->post->equation))->trace()
-            );
+            $eq = $this->_request->post->equation;
+            $vars = $this->_request->post->variables;
+            $this->_renderJson([
+                'trace' => (new Calc($eq, $vars))->trace(),
+                'result' => (new Calc($eq, $vars))->result()
+            ]);
         } catch (CalcException $e) {
             http_response_code(405);
             $this->_renderJson([

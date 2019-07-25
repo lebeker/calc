@@ -1,0 +1,35 @@
+.calculator {
+    min-width: 200px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr 4fr 4fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+            "header header header header header"
+            "main main main sidebar sidebar"
+            "footer footer footer eq eq";
+}
+.input {
+    grid-area: header;
+}
+.input input {
+    text-align: right;
+}
+.digits {
+    grid-area: main;
+}
+.digits .btn {
+    width: 33%;
+}
+.operations {
+    grid-area: sidebar;
+}
+.operations .btn {
+    width: 50%;
+}
+.options {
+    grid-area: footer;
+}
+.eq {
+    grid-area: eq;
+}

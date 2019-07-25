@@ -1,12 +1,12 @@
 'use strict';
 
 export class CalcAPI {
-    _request = (equation) =>
+    _request = (equation, variables  = []) =>
         fetch('/calc', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({equation})
+            body: JSON.stringify({equation, variables})
         })
 }

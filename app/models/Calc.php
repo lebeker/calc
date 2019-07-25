@@ -15,11 +15,12 @@ class Calc
     /**
      * Calc constructor.
      * @param $str
+     * @param array $vars
      * @throws CalcException
      */
-    public function __construct($str)
+    public function __construct($str, $vars = [])
     {
-        $this->_store = new VariableStorage();
+        $this->_store = new VariableStorage($vars);
         $this->_operators = [[],[],[],[],[]];
         foreach ([
              new PlusOperator(),
@@ -42,29 +43,24 @@ class Calc
      */
     protected function _split($str)
     {
-        $str0 = $str;
-        $reVar = '-?\#?[a-zA-Z0-9]+';
+        $reVar = '\#?[a-zA-Z0-9]+';
         if (preg_match("#^$reVar$#", $str))
             return is_numeric($str) ? $this->_store->push($str) : $str;
-
+        $str = preg_replace("#($reVar)--($reVar)#", '$1+$2', $str);
+        $str = preg_replace("#($reVar)\+-($reVar)#", '$1-$2', $str);
+        $str0 = $str;
         foreach ($this->_operators as $ops) {
             if (!$ops) continue;
             $symb = join('|', array_keys($ops));
             $symb = preg_replace('#([+*])#i', '\\\\$1', $symb);
-            $regx = "#([a-zA-Z0-9])?($reVar)(\s*($symb)\s*)($reVar)#";
+            $regx = "#($reVar)(\s*($symb)\s*)($reVar)#";
             preg_match_all($regx, $str, $m);
             if (!$m[0]) continue;
-
-            $op = $ops[$m[4][0][0]];
-            if ($m[1][0]) {
-                if ($m[2][0][0] == '-') {
-                    $m[2][0] = substr($m[2][0], 1);
-                } else {
-                    $m[2][0] = $m[1][0] . $m[2][0];
-                }
+            for ($i = 0; count($m[0]) > $i; $i++) {
+                $op = $ops[$m[3][$i][0]];
+                $nm = $this->_store->push(new Equation($m[1][$i], $op, $m[4][$i]));
+                $str = str_replace($m[1][$i] . $m[3][$i] . $m[4][$i], $nm, $str);
             }
-            $nm = $this->_store->push(new Equation($m[2][0], $op, $m[5][0]));
-            $str = str_replace($m[2][0] . $m[3][0] . $m[5][0], $nm, $str);
         }
         if ($str == $str0) throw new CalcException("Syntax error at: $str");
         return $this->_split($str);
@@ -77,7 +73,6 @@ class Calc
     protected function _parse($str)
     {
         do {
-            echo "parsing... $str\n";
             preg_match_all('#\(([^()]+)\)#', $str, $m);
             for ($i = 0; count($m[1]) > $i; $i++) {
                 $sub = $this->_split($m[1][$i]);
@@ -95,7 +90,7 @@ class Calc
             $trace[] = [
                 'var' => $k,
                 'equation' => "$eq",
-                'res' => is_string($eq)
+                'res' => is_string($eq) || is_numeric($eq)
                 ? $eq
                 : $eq->exec($this->_store)
             ];
