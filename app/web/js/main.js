@@ -9,4 +9,5 @@ export class CalcAPI {
             },
             body: JSON.stringify({equation, variables})
         })
+            .then(res => res.json())
 }

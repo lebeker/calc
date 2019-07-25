@@ -43,7 +43,7 @@ class Calc
      */
     protected function _split($str)
     {
-        $reVar = '\#?[a-zA-Z0-9]+';
+        $reVar = '\#?[a-zA-Z0-9\.]+';
         if (preg_match("#^$reVar$#", $str))
             return is_numeric($str) ? $this->_store->push($str) : $str;
         $str = preg_replace("#($reVar)--($reVar)#", '$1+$2', $str);
@@ -99,7 +99,7 @@ class Calc
     }
 
     public function result() {
-        return $this->_store->last()->exec($this->_store);
+        return $this->_store->lastVal();
     }
 }
 

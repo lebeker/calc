@@ -9,6 +9,22 @@
             "main main main sidebar sidebar"
             "footer footer footer eq eq";
 }
+#result {
+    background-color: #fff;
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.variables input.var-name {
+  width: 30px
+}
+.variables input.var-val{
+    width: 80px
+}
+.variables li {
+    min-width: 170px;
+}
 .input {
     grid-area: header;
 }

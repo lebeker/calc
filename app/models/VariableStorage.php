@@ -47,8 +47,9 @@ class VariableStorage
         return $this->_variables;
     }
 
-    public function last()
+    public function lastVal()
     {
-        return end($this->_variables);
+        $res = end($this->_variables);
+        return $res instanceof Equation ? $res->exec($this) : $res;
     }
 }
