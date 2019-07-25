@@ -1,7 +1,6 @@
 <?php
 namespace models\operators;
 
-
 class MultiplyOperator extends BasicOperator
 {
     protected $_symbol = '*';

@@ -1,7 +1,6 @@
 <?php
 namespace models\operators;
 
-
 class PlusOperator extends BasicOperator
 {
     protected $_symbol = '+';

@@ -1,7 +1,6 @@
 <?php
 namespace core;
 
-
 abstract class Controller
 {
     protected $_request;

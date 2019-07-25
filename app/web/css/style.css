@@ -16,6 +16,14 @@
     margin: 0;
     border-bottom: 1px solid #e0e0e0;
 }
+.log {
+    height: 20px;
+    word-break: break-all;
+    overflow: hidden;
+}
+#error {
+    padding: 10px;
+}
 .variables input.var-name {
   width: 30px
 }

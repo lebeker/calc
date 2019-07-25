@@ -1,7 +1,6 @@
 <?php
 namespace models\operators;
 
-
 class MinusOperator extends BasicOperator
 {
     protected $_symbol = '-';

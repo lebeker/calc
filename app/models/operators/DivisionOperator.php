@@ -1,7 +1,6 @@
 <?php
 namespace models\operators;
 
-
 use models\exceptions\CalcException;
 
 class DivisionOperator extends BasicOperator

@@ -102,5 +102,3 @@ class Calc
         return $this->_store->lastVal();
     }
 }
-
-?>
