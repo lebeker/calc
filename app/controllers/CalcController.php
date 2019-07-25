@@ -7,12 +7,20 @@ use models\exceptions\CalcException;
 
 class CalcController extends Controller
 {
-    public function actionCalc()
+    public function actionIndex()
     {
         try {
-            new Calc('((33--4+5)/34 + -49)-(6)');
+            // '((33--4+5)/34 + -49)-(6)'
+            // (34-44)*19 - 6
+            // 34-44*19 - 6
+            $this->_renderJson(
+                (new Calc($this->_request->post->equation))->trace()
+            );
         } catch (CalcException $e) {
-            $this->_renderError($e);
+            http_response_code(405);
+            $this->_renderJson([
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

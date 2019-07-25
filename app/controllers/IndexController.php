@@ -1,6 +1,10 @@
 <?php
 namespace controllers;
 
-class IndexController {
+use core\Controller;
 
+class IndexController extends Controller {
+    public function actionIndex() {
+        $this->_renderView('calculator');
+    }
 }

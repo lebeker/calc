@@ -4,6 +4,12 @@ namespace core;
 
 abstract class Controller
 {
+    protected $_request;
+    public function __construct($req)
+    {
+        $this->_request = $req;
+    }
+
     protected function _render($txt) {
         echo $txt;
     }
@@ -12,7 +18,7 @@ abstract class Controller
         echo json_encode($any);
     }
 
-    protected function _renderView($name, $data) {
+    protected function _renderView($name, $data = []) {
         $vname = __DIR__ . '/../views/' . $name . '.php';
         if (file_exists($vname)) {
             extract($data);

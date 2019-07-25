@@ -13,6 +13,10 @@ class VariableStorage
         return $name;
     }
 
+    public function get($key) {
+        return $this->_variables[$key] ?? null;
+    }
+
     public function all()
     {
         return $this->_variables;
