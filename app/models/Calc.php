@@ -20,7 +20,7 @@ class Calc
      */
     public function __construct($str, $vars = [])
     {
-        $this->_store = new VariableStorage($vars);
+        $this->_store = $vars instanceof VariableStorage ? $vars : new VariableStorage($vars);
         $this->_operators = [[],[],[],[],[]];
         foreach ([
              new PlusOperator(),
@@ -72,6 +72,7 @@ class Calc
      */
     protected function _parse($str)
     {
+        $str0 = $str;
         do {
             preg_match_all('#\(([^()]+)\)#', $str, $m);
             for ($i = 0; count($m[1]) > $i; $i++) {
@@ -81,6 +82,7 @@ class Calc
         } while ($m[1]);
         $str = $this->_split($str);
         if ((strpos($str, '(') !== false) || strpos($str, ')') !== false) throw new CalcException('Wrong parenthesis');
+        if ($str == $str0) throw new CalcException("Syntax error at: $str");
     }
 
     public function trace()
